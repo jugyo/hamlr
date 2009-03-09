@@ -16,7 +16,7 @@ set :password, 'test'
 enable :sessions
 
 before do
-  delete_old_tokens
+  AuthToken.delete_old_tokens
   @logged_in = false
   auth_token = AuthToken.first(:token => session['token'])
   if auth_token
@@ -42,7 +42,7 @@ post '/login' do
   if @logged_in
     redirect '/'
   elsif auth(params[:user_id], params[:password])
-    auth_token = AuthToken.new(:token=>generate_token, :expired_at=>token_expired_time)
+    auth_token = AuthToken.new(:token=>AuthToken.generate_token, :expired_at=>token_expired_time)
     session['token'] = auth_token.token
     auth_token.save
     redirect '/'
@@ -80,17 +80,6 @@ helpers do
   end
 end
 
-def delete_old_tokens
-  AuthToken.all(:expired_at.lt => DateTime.now).each do |token|
-    token.destroy
-  end
-end
-
-def generate_token(length=32)
-  alphanumerics = ('a'..'z').to_a.concat(('A'..'Z').to_a.concat(('0'..'9').to_a))
-  alphanumerics.sort_by{rand}.to_s[0..length]
-end
-
 def token_expired_time
   DateTime.now + 60 * 60 * 24
 end
@@ -99,6 +88,3 @@ def auth(user_id, password)
   options.user_id == user_id && options.password == password
 end
 
-def create_token
-  'foo'
-end
