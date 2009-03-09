@@ -5,7 +5,8 @@ require 'sinatra'
 # TODO: 古いトークンの削除
 
 # Init for DataMapper
-DataMapper.setup(:default, "sqlite3:///#{Dir.pwd}/sinalog.db")
+DataMapper.setup(:default, "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/db/hamlog.db")
+#DataObjects::Sqlite3.logger = DataObjects::Logger.new(STDOUT, :debug)
 require 'models'
 DataMapper.auto_upgrade!
 
@@ -15,6 +16,7 @@ set :password, 'test'
 enable :sessions
 
 before do
+  delete_old_tokens
   @logged_in = false
   auth_token = AuthToken.first(:token => session['token'])
   if auth_token
@@ -78,13 +80,19 @@ helpers do
   end
 end
 
+def delete_old_tokens
+  AuthToken.all(:expired_at.lt => DateTime.now).each do |token|
+    token.destroy
+  end
+end
+
 def generate_token(length=32)
   alphanumerics = ('a'..'z').to_a.concat(('A'..'Z').to_a.concat(('0'..'9').to_a))
   alphanumerics.sort_by{rand}.to_s[0..length]
 end
 
 def token_expired_time
-  Time.now + 60 * 60 * 24
+  DateTime.now + 60 * 60 * 24
 end
 
 def auth(user_id, password)
