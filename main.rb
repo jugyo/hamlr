@@ -2,8 +2,6 @@ require 'rubygems'
 require 'dm-core'
 require 'sinatra'
 
-# TODO: 古いトークンの削除
-
 # Init for DataMapper
 DataMapper.setup(:default, "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/db/hamlog.db")
 #DataObjects::Sqlite3.logger = DataObjects::Logger.new(STDOUT, :debug)
@@ -28,6 +26,32 @@ end
 
 get '/' do
   haml :top
+end
+
+get '/entry/:id' do
+  @entry = Entry.get(params[:id])
+  haml :entry
+end
+
+get '/entry/edit/:id' do
+  @entry = Entry.get(params[:id])
+  haml :entry
+end
+
+post '/entry/upadte/:id' do
+  @entry = Entry.get(params[:id])
+  # TODO
+#  haml :entry
+end
+
+get '/entry/new' do
+  haml :entry_new
+end
+
+post '/entry/create' do
+  # TODO: auth
+  e = Entry.create(params)
+  redirect "/entry/#{e.id}"
 end
 
 get '/login' do
