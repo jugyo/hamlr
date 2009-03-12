@@ -1,1 +1,4 @@
-%h1 top
+-@entries.each do |entry|
+  .entry
+    %h2.entry_title=h entry.title
+    .entry_body=pa entry.body

@@ -27,12 +27,12 @@ before do
 end
 
 get '/' do
+  @entries = Entry.all(:order => [:created_at.desc], :limit=>10)
   haml :top
 end
 
-get '/entry/:id' do
-  @entry = Entry.get(params[:id])
-  haml :entry
+get 'search' do
+  # TODO
 end
 
 get '/entry/edit/:id' do
@@ -41,19 +41,24 @@ get '/entry/edit/:id' do
 end
 
 post '/entry/upadte/:id' do
-  @entry = Entry.get(params[:id])
   # TODO
-#  haml :entry
+  @entry = Entry.get(params[:id])
+  @entry.update_attributes(params[:entry])
+  redirect :"entry/#{@entry.id}"
 end
 
 get '/entry/new' do
-  haml :entry_new
+  haml :'entry/new'
 end
 
 post '/entry/create' do
-  # TODO: auth
   e = Entry.create(params)
   redirect "/entry/#{e.id}"
+end
+
+get '/entry/:id' do
+  @entry = Entry.get(params[:id])
+  haml :'entry/show'
 end
 
 get '/login' do
@@ -90,6 +95,17 @@ get '/css' do
 end
 
 helpers do
+  def h(str)
+    # TODO
+    str
+  end
+
+  def pa(str)
+    # TODO
+    str = h str
+    str.gsub("\n", '<br />')
+  end
+
   def partial(renderer, template, options = {})
     options = options.merge({:layout => false})
     template = "_#{template.to_s}".to_sym

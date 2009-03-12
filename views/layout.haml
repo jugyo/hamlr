@@ -5,7 +5,11 @@
   %body
     #wrap
       #header
+        %a{:href=>'/'} home
+        \|
         - if @logged_in
+          %a{:href=>'/entry/new'} new post
+          \|
           %a{:href=>'/logout'} logout
         - else
           %a{:href=>'/login'} login
