@@ -1,0 +1,17 @@
+= hamlr
+
+== DESCRIPTION:
+
+Hamlr is a simple blog tool using haml.
+
+== FEATURES/PROBLEMS:
+
+== SYNOPSIS:
+
+Run:
+
+  ./run.rb
+
+== REQUIREMENTS:
+
+  sudo gem install dm-core do_sqlite3 sinatra
