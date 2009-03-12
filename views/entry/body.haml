@@ -1,0 +1,7 @@
+.entry
+  %h2.entry_title
+    %a{:href=>"/entry/show/#{entry.id}"}=h entry.title
+  .entry_body=tx entry.body
+  - if @logged_in
+    .admin_menu
+      %a{:href=>"/entry/edit/#{entry.id}"} edit

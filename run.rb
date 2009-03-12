@@ -3,15 +3,18 @@
 require 'rubygems'
 require 'dm-core'
 require 'sinatra'
+require 'yaml'
+require 'redcloth'
+
+basedir = File.expand_path(File.dirname(__FILE__))
 
 # Init for DataMapper
-DataMapper.setup(:default, "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/hamlog.db")
+DataMapper.setup(:default, "sqlite3:///#{basedir}/hamlog.db")
 #DataObjects::Sqlite3.logger = DataObjects::Logger.new(STDOUT, :debug)
 require 'models'
 DataMapper.auto_upgrade!
 
-set :user_id, 'test'
-set :password, 'test'
+set YAML.load(open("#{basedir}/conf.yml"))
 
 enable :sessions
 
@@ -27,7 +30,7 @@ before do
 end
 
 get '/' do
-  @entries = Entry.all(:order => [:created_at.desc], :limit=>10)
+  @entries = Entry.all(:order => [:id.desc], :limit=>10)
   haml :top
 end
 
@@ -100,15 +103,13 @@ helpers do
     str
   end
 
-  def pa(str)
-    # TODO
-    str = h str
-    str.gsub("\n", '<br />')
+  def tx(str)
+    RedCloth.new(str).to_html
   end
 
   def partial(renderer, template, options = {})
     options = options.merge({:layout => false})
-    template = "_#{template.to_s}".to_sym
+    template = "#{template.to_s}".to_sym
     m = method(renderer)
     m.call(template, options)
   end

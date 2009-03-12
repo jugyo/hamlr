@@ -1,0 +1,7 @@
+#post_form
+  %form{:action=>action, :method=>'post'}
+    %input{:type=>'text', :name=>'title', :size=>100}
+    %br
+    %textarea{:name=>'body', :rows=>30, :cols=>100}
+    %br
+    %input{:type=>'submit'}

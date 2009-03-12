@@ -1,7 +1,1 @@
-#post_form
-  %form{:action=>'/entry/create', :method=>'post'}
-    %input{:type=>'text', :name=>'title', :size=>100}
-    %br
-    %textarea{:name=>'body', :rows=>30, :cols=>100}
-    %br
-    %input{:type=>'submit'}
+= partial :haml, 'entry/form', :locals => {:action => '/entry/create', :button_label => 'create'}

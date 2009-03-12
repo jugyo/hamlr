@@ -2,16 +2,24 @@
   %head
     %title Blogr
     %link{:rel=>'stylesheet', :type=>'text/css', :href=>'/css', :media=>'screen,tv,projection'}
+
   %body
     #wrap
       #header
-        %a{:href=>'/'} home
-        \|
-        - if @logged_in
-          %a{:href=>'/entry/new'} new post
-          \|
-          %a{:href=>'/logout'} logout
-        - else
-          %a{:href=>'/login'} login
+        %h1
+          %a{:href=>'/'}= options.blog_title
+
+        .admin_menu
+          - if @logged_in
+            %a{:href=>'/entry/new'} new post
+            \|
+            %a{:href=>'/logout'} logout
+          - else
+            %a{:href=>'/login'} login
+
       #content
         = yield
+
+      #footer
+        Powerdd by
+        %a{:href=>'http://github.com/jugyo/hamlr'} Hamlr
