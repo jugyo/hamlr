@@ -5,7 +5,7 @@ require 'dm-core'
 require 'sinatra'
 
 # Init for DataMapper
-DataMapper.setup(:default, "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/db/hamlog.db")
+DataMapper.setup(:default, "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/hamlog.db")
 #DataObjects::Sqlite3.logger = DataObjects::Logger.new(STDOUT, :debug)
 require 'models'
 DataMapper.auto_upgrade!
