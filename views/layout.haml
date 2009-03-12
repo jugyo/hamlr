@@ -3,10 +3,11 @@
     %title Blogr
     %link{:rel=>'stylesheet', :type=>'text/css', :href=>'/css', :media=>'screen,tv,projection'}
   %body
-    #header
-      - if @logged_in
-        %a{:href=>'/logout'} logout
-      - else
-        %a{:href=>'/login'} login
-    #content
-      = yield
+    #wrap
+      #header
+        - if @logged_in
+          %a{:href=>'/logout'} logout
+        - else
+          %a{:href=>'/login'} login
+      #content
+        = yield
