@@ -1,7 +1,7 @@
 #post_form
   %form{:action=>action, :method=>'post'}
-    %input{:type=>'text', :name=>'title', :size=>100}
+    %input{:type=>'text', :name=>'title', :size=>100, :value=>@entry.title}
     %br
-    %textarea{:name=>'body', :rows=>30, :cols=>100}
+    %textarea{:name=>'body', :rows=>30, :cols=>100}= @entry.body
     %br
-    %input{:type=>'submit'}
+    %input{:type=>'submit', :value=>button_label}

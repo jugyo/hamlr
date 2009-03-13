@@ -40,18 +40,20 @@ end
 
 get '/entry/edit/:id' do
   @entry = Entry.get(params[:id])
-  haml :entry
+  haml %Q{= partial :haml, 'entry/form', :locals => {:action => '/entry/update/#{params[:id]}', :button_label => 'save'}}
 end
 
-post '/entry/upadte/:id' do
+post '/entry/update/:id' do
   # TODO
+  p params
   @entry = Entry.get(params[:id])
-  @entry.update_attributes(params[:entry])
-  redirect :"entry/#{@entry.id}"
+  @entry.update_attributes(:title=>params[:title], :body=>params[:body])
+  redirect "/entry/#{@entry.id}"
 end
 
 get '/entry/new' do
-  haml :'entry/new'
+  @entry = Entry.new
+  haml %Q{= partial :haml, 'entry/form', :locals => {:action=>'/entry/create', :button_label=>'post'}}
 end
 
 post '/entry/create' do
