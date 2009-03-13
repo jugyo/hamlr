@@ -10,7 +10,7 @@ basedir = File.expand_path(File.dirname(__FILE__))
 
 # Init for DataMapper
 DataMapper.setup(:default, "sqlite3:///#{basedir}/hamlog.db")
-#DataObjects::Sqlite3.logger = DataObjects::Logger.new(STDOUT, :debug)
+DataObjects::Sqlite3.logger = DataObjects::Logger.new(STDOUT, :debug)
 require 'models'
 DataMapper.auto_upgrade!
 
@@ -38,11 +38,11 @@ get '/' do
   HAML
 end
 
-get '/page/:num' do
-  if params[:num] =~ /\d+/
-    @page = params[:num].to_i
-    @entries = Entry.all(:order => [:id.desc], :limit=>options.par_page, :offset=>@page * options.par_page)
-    haml %q{partial :haml, 'list', :locals => {:entries => @entries}}
+get '/page/:page' do
+  if params[:page] =~ /\d+/
+    @page = params[:page].to_i
+    @entries = Entry.all(:order => [:id.desc], :limit=>options.par_page, :offset=>(@page - 1) * options.par_page)
+    haml %q{=partial :haml, 'list', :locals => {:entries => @entries}}
   else
     redirect '/'
   end
@@ -50,9 +50,19 @@ end
 
 get '/search' do
   @q = params[:q] || ''
+  @page = 
+    if params[:page] && params[:page] =~ /\d+/
+      params[:page].to_i
+    else
+      1
+    end
   @entries =
     unless @q.empty?
-      @entries = Entry.all(:conditions=>['title like ? OR body like ?', "%#{@q}%", "%#{@q}%"], :limit=>10)
+      @entries = Entry.all(
+        :order => [:id.desc],
+        :conditions=>['title like ? OR body like ?', "%#{@q}%", "%#{@q}%"],
+          :limit=>options.par_page,
+          :offset=>(@page - 1) * options.par_page)
     else
       redirect '/'
     end
@@ -126,7 +136,11 @@ helpers do
   end
 
   def tx(str)
-    RedCloth.new(str).to_html
+    if str
+      RedCloth.new(str).to_html
+    else
+      ''
+    end
   end
 
   def partial(renderer, template, options = {})
