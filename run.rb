@@ -16,6 +16,7 @@ DataMapper.auto_upgrade!
 
 set YAML.load(open("#{basedir}/conf.yml"))
 set :public, "#{basedir}/public"
+set :par_page, 10
 
 enable :sessions
 
@@ -31,30 +32,36 @@ before do
 end
 
 get '/' do
-  @entries = Entry.all(:order => [:id.desc], :limit=>10)
+  @entries = Entry.all(:order => [:id.desc], :limit=>options.par_page)
   haml <<-HAML
 = partial :haml, 'list', :locals => {:entries => @entries}
   HAML
+end
+
+get '/page/:num' do
+  if params[:num] =~ /\d+/
+    @page = params[:num].to_i
+    @entries = Entry.all(:order => [:id.desc], :limit=>options.par_page, :offset=>@page * options.par_page)
+    haml %q{partial :haml, 'list', :locals => {:entries => @entries}}
+  else
+    redirect '/'
+  end
 end
 
 get '/search' do
   @q = params[:q] || ''
   @entries =
     unless @q.empty?
-      @entries = Entry.all(:conditions=>['title like ? OR body like ?', "%#{@q}%", "%#{@q}%"])
+      @entries = Entry.all(:conditions=>['title like ? OR body like ?', "%#{@q}%", "%#{@q}%"], :limit=>10)
     else
       redirect '/'
     end
-  haml <<-HAML
-= partial :haml, 'list', :locals => {:entries => @entries}
-  HAML
+  haml %q{= partial :haml, 'list', :locals => {:entries => @entries}}
 end
 
 get '/entry/edit/:id' do
   @entry = Entry.get(params[:id])
-  haml <<-HAML
-= partial :haml, 'entry/form', :locals => {:action => '/entry/update/#{params[:id]}', :button_label => 'save'}
-  HAML
+  haml %q{= partial :haml, 'entry/form', :locals => {:action => '/entry/update/#{params[:id]}', :button_label => 'save'}}
 end
 
 post '/entry/update/:id' do
@@ -66,9 +73,7 @@ end
 
 get '/entry/new' do
   @entry = Entry.new
-  haml <<-HAML
-= partial :haml, 'entry/form', :locals => {:action=>'/entry/create', :button_label=>'post'}
-  HAML
+  haml %q{= partial :haml, 'entry/form', :locals => {:action=>'/entry/create', :button_label=>'post'}}
 end
 
 post '/entry/create' do
