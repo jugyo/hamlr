@@ -9,7 +9,9 @@
         %h1
           %a{:href=>'/'}= options.blog_title
 
-        .admin_menu
+        .main_menu
+          %form{:action=>'/search', :method=>'get', :class=>'seach_form'}
+            %input{:type=>'text', :name=>'q', :value=>(defined?(@q) ? @q : ''), :class=>'seach_text_field'}
           - if @logged_in
             %a{:href=>'/entry/new'} new post
             \|

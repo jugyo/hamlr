@@ -15,6 +15,7 @@ require 'models'
 DataMapper.auto_upgrade!
 
 set YAML.load(open("#{basedir}/conf.yml"))
+set :public, "#{basedir}/public"
 
 enable :sessions
 
@@ -31,11 +32,22 @@ end
 
 get '/' do
   @entries = Entry.all(:order => [:id.desc], :limit=>10)
-  haml :top
+  haml <<-HAML
+= partial :haml, 'list', :locals => {:entries => @entries}
+  HAML
 end
 
-get 'search' do
-  # TODO
+get '/search' do
+  @q = params[:q] || ''
+  @entries =
+    unless @q.empty?
+      @entries = Entry.all(:conditions=>['title like ? OR body like ?', "%#{@q}%", "%#{@q}%"])
+    else
+      []
+    end
+  haml <<-HAML
+= partial :haml, 'list', :locals => {:entries => @entries}
+  HAML
 end
 
 get '/entry/edit/:id' do
