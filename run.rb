@@ -43,7 +43,7 @@ get '/search' do
     unless @q.empty?
       @entries = Entry.all(:conditions=>['title like ? OR body like ?', "%#{@q}%", "%#{@q}%"])
     else
-      []
+      redirect '/'
     end
   haml <<-HAML
 = partial :haml, 'list', :locals => {:entries => @entries}
