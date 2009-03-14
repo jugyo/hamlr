@@ -10,7 +10,7 @@ basedir = File.expand_path(File.dirname(__FILE__))
 
 # Init for DataMapper
 DataMapper.setup(:default, "sqlite3:///#{basedir}/hamlog.db")
-DataObjects::Sqlite3.logger = DataObjects::Logger.new(STDOUT, :debug)
+#DataObjects::Sqlite3.logger = DataObjects::Logger.new(STDOUT, :debug)
 require 'models'
 DataMapper.auto_upgrade!
 
@@ -56,17 +56,14 @@ get '/search' do
     else
       1
     end
-  @entries =
-    unless @q.empty?
-      @entries = Entry.all(
-        :order => [:id.desc],
-        :conditions=>['title like ? OR body like ?', "%#{@q}%", "%#{@q}%"],
-          :limit=>options.par_page,
-          :offset=>(@page - 1) * options.par_page)
-    else
-      redirect '/'
-    end
-  haml %q{= partial :haml, 'list', :locals => {:entries => @entries}}
+  unless @q.empty?
+    @entries = repository(:default).adapter.query(
+      'SELECT * FROM entries WHERE title like ? or body like ? limit ? offset ?',
+      "%#{@q}%", "%#{@q}%", options.par_page, (@page - 1) * options.par_page)
+    haml %q{= partial :haml, 'list', :locals => {:entries => @entries}}
+  else
+    redirect '/'
+  end
 end
 
 get '/entry/edit/:id' do
