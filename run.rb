@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-
+# TODO: list.haml => entries.haml
 require 'rubygems'
 require 'dm-core'
 require 'sinatra'
@@ -16,7 +16,6 @@ DataMapper.auto_upgrade!
 
 set YAML.load(open("#{basedir}/conf.yml"))
 set :public, "#{basedir}/public"
-set :par_page, 10
 
 enable :sessions
 
@@ -32,17 +31,25 @@ before do
 end
 
 get '/' do
+  @page = 1
   @entries = Entry.all(:order => [:id.desc], :limit=>options.par_page)
+  count = repository(:default).adapter.query('SELECT count(*) FROM entries')[0]
+  @page_count = (count / options.par_page.to_f).ceil
   haml <<-HAML
-= partial :haml, 'list', :locals => {:entries => @entries}
+= partial :haml, 'entries', :locals => {:entries => @entries}
   HAML
 end
 
 get '/page/:page' do
   if params[:page] =~ /\d+/
     @page = params[:page].to_i
-    @entries = Entry.all(:order => [:id.desc], :limit=>options.par_page, :offset=>(@page - 1) * options.par_page)
-    haml %q{=partial :haml, 'list', :locals => {:entries => @entries}}
+    @entries = Entry.all(:order => [:id.desc], :limit => options.par_page, :offset => (@page - 1) * options.par_page)
+    count = repository(:default).adapter.query('SELECT count(*) FROM entries')[0]
+    @page_count = (count / options.par_page.to_f).ceil
+    p @page
+    p count
+    p @page_count
+    haml %q{=partial :haml, 'entries', :locals => {:entries => @entries}}
   else
     redirect '/'
   end
@@ -60,7 +67,11 @@ get '/search' do
     @entries = repository(:default).adapter.query(
       'SELECT * FROM entries WHERE title like ? or body like ? limit ? offset ?',
       "%#{@q}%", "%#{@q}%", options.par_page, (@page - 1) * options.par_page)
-    haml %q{= partial :haml, 'list', :locals => {:entries => @entries}}
+    count = repository(:default).adapter.query(
+      'SELECT count(*) FROM entries WHERE title like ? or body like ?',
+      "%#{@q}%", "%#{@q}%")[0]
+    @page_count = (count / options.par_page.to_f).ceil
+    haml %q{= partial :haml, 'search', :locals => {:entries => @entries}}
   else
     redirect '/'
   end
@@ -72,7 +83,6 @@ get '/entry/edit/:id' do
 end
 
 post '/entry/update/:id' do
-  p params
   @entry = Entry.get(params[:id])
   @entry.update_attributes(:title=>params[:title], :body=>params[:body])
   redirect "/entry/#{@entry.id}"
