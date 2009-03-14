@@ -1,6 +1,7 @@
 .entry
   %h2.entry_title
     %a{:href=>"/entry/#{entry.id}"}=h entry.title
+    %span{:style=>'font-size: 0.7em; color: silver;'}="##{entry.id}"
   .entry_body=tx entry.body
   - if @logged_in
     .entry_menu
