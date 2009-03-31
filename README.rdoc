@@ -8,9 +8,10 @@ Hamlr is a simple blog tool using haml.
 
 Using:
 
-* Sinatra
 * Haml
 * Sass
+* Textile
+* Sinatra
 * DataMapper
 * SQLite
 
