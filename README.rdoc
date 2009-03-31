@@ -23,6 +23,15 @@ Run on mod_rails:
 See also:
 http://www.sinatrarb.com/book.html#deployment_passenger
 
+== CONFIGURATION:
+
+config.yml
+
+  :user_id: your id
+  :password: your password
+  :blog_title: your blog title
+  :par_page: 10
+
 == REQUIREMENTS:
 
   sudo gem install rack dm-core do_sqlite3 sinatra haml RedCloth
