@@ -46,10 +46,7 @@ get '/page/:page' do
     @entries = Entry.all(:order => [:id.desc], :limit => options.par_page, :offset => (@page - 1) * options.par_page)
     count = repository(:default).adapter.query('SELECT count(*) FROM entries')[0]
     @page_count = (count / options.par_page.to_f).ceil
-    p @page
-    p count
-    p @page_count
-    haml %q{=partial :haml, 'entries', :locals => {:entries => @entries}}
+    haml "=partial :haml, 'entries', :locals => {:entries => @entries}"
   else
     redirect '/'
   end
@@ -71,7 +68,7 @@ get '/search' do
       'SELECT count(*) FROM entries WHERE title like ? or body like ?',
       "%#{@q}%", "%#{@q}%")[0]
     @page_count = (count / options.par_page.to_f).ceil
-    haml %q{= partial :haml, 'search', :locals => {:entries => @entries}}
+    haml "= partial :haml, 'search', :locals => {:entries => @entries}"
   else
     redirect '/'
   end
@@ -79,7 +76,7 @@ end
 
 get '/entry/edit/:id' do
   @entry = Entry.get(params[:id])
-  haml %q{= partial :haml, 'entry/form', :locals => {:action => '/entry/update/#{params[:id]}', :button_label => 'save'}}
+  haml "= partial :haml, 'entry/form', :locals => {:action => '/entry/update/#{params[:id]}', :button_label => 'save'}"
 end
 
 post '/entry/update/:id' do
@@ -90,7 +87,7 @@ end
 
 get '/entry/new' do
   @entry = Entry.new
-  haml %q{= partial :haml, 'entry/form', :locals => {:action=>'/entry/create', :button_label=>'post'}}
+  haml "= partial :haml, 'entry/form', :locals => {:action=>'/entry/create', :button_label=>'post'}"
 end
 
 post '/entry/create' do
