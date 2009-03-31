@@ -14,7 +14,7 @@ DataMapper.setup(:default, "sqlite3:///#{basedir}/hamlog.db")
 require 'models'
 DataMapper.auto_upgrade!
 
-set YAML.load(open("#{basedir}/conf.yml"))
+set YAML.load(open("#{basedir}/config.yml"))
 set :public, "#{basedir}/public"
 
 enable :sessions
