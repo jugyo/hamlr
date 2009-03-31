@@ -8,9 +8,13 @@ Hamlr is a simple blog tool using haml.
 
 == SYNOPSIS:
 
-Run:
+Run as standalon server:
 
-  ./run.rb
+  ./app.rb
+
+Run on mod_rails:
+
+TODO
 
 == REQUIREMENTS:
 
