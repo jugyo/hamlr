@@ -25,4 +25,4 @@ http://www.sinatrarb.com/book.html#deployment_passenger
 
 == REQUIREMENTS:
 
-  sudo gem install dm-core do_sqlite3 sinatra haml RedCloth
+  sudo gem install rack dm-core do_sqlite3 sinatra haml RedCloth
