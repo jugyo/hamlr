@@ -14,7 +14,14 @@ Run as standalon server:
 
 Run on mod_rails:
 
-TODO
+  # httpd.conf
+  <VirtualHost *:80>
+    ServerName your.domain.com
+    DocumentRoot /xxx/xxx/hamlr/public
+  </VirtualHost>
+
+See also:
+http://www.sinatrarb.com/book.html#deployment_passenger
 
 == REQUIREMENTS:
 
