@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# TODO: list.haml => entries.haml
+
 require 'rubygems'
 require 'dm-core'
 require 'sinatra'
