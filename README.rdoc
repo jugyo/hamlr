@@ -4,7 +4,7 @@
 
 Hamlr is a simple blog tool using haml.
 
-== FEATURES/PROBLEMS:
+== FEATURES:
 
 Using:
 
@@ -14,6 +14,10 @@ Using:
 * Sinatra
 * DataMapper
 * SQLite
+
+== DEMO:
+
+http://hamlr.oyguj.org/
 
 == SYNOPSIS:
 
