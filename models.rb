@@ -29,6 +29,6 @@ class AuthToken
   end
 end
 
-DataMapper.setup(:default, "sqlite3:///#{File.dirname(__FILE__)}/hamlr.db")
+DataMapper.setup(:default, "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/hamlr.db")
 #DataObjects::Sqlite3.logger = DataObjects::Logger.new(STDOUT, :debug)
 DataMapper.auto_upgrade!
