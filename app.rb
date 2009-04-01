@@ -35,9 +35,7 @@ get '/' do
   @entries = Entry.all(:order => [:id.desc], :limit=>options.par_page)
   count = repository(:default).adapter.query('SELECT count(*) FROM entries')[0]
   @page_count = (count / options.par_page.to_f).ceil
-  haml <<-HAML
-= partial :haml, 'entries', :locals => {:entries => @entries}
-  HAML
+  haml "= partial :haml, 'entries', :locals => {:entries => @entries}"
 end
 
 get '/page/:page' do
