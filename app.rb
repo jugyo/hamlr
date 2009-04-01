@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
 
 require 'rubygems'
 require 'sinatra'
@@ -10,7 +11,7 @@ BASE_DIR = File.expand_path(File.dirname(__FILE__)) unless defined? BASE_DIR
 require 'models'
 
 set YAML.load(open("#{BASE_DIR}/config.yml"))
-set :public, "#{BASE_DIR}/public"
+
 enable :sessions
 
 before do
@@ -22,6 +23,7 @@ before do
     auth_token.save
     @logged_in = true
   end
+  content_type "text/html", :charset => "utf-8"
 end
 
 get '/' do
@@ -122,6 +124,7 @@ get '/logout' do
 end
 
 get '/css' do
+  content_type 'text/css', :charset => 'utf-8'
   sass :styles
 end
 
