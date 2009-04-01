@@ -47,4 +47,10 @@ config.yml
 
 == REQUIREMENTS:
 
-  sudo gem install rack dm-core do_sqlite3 sinatra haml RedCloth
+* sinatra
+* haml
+* dm-core
+* do_sqlite3
+* RedCloth
+
+  sudo gem install sinatra haml dm-core do_sqlite3 RedCloth
