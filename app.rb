@@ -6,11 +6,9 @@ require 'sinatra'
 require 'yaml'
 require 'redcloth'
 
-BASE_DIR = File.expand_path(File.dirname(__FILE__)) unless defined? BASE_DIR
-
 require 'models'
 
-set YAML.load(open("#{BASE_DIR}/config.yml"))
+set YAML.load(open("#{File.dirname(__FILE__)}/config.yml"))
 
 enable :sessions
 
