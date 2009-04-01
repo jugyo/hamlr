@@ -1,3 +1,5 @@
+require 'dm-core'
+
 class Entry
   include DataMapper::Resource
   property :id,         Serial
@@ -26,3 +28,7 @@ class AuthToken
     end
   end
 end
+
+DataMapper.setup(:default, "sqlite3:///#{BASE_DIR}/hamlr.db")
+#DataObjects::Sqlite3.logger = DataObjects::Logger.new(STDOUT, :debug)
+DataMapper.auto_upgrade!

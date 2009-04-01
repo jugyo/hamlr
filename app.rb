@@ -1,22 +1,16 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'dm-core'
 require 'sinatra'
 require 'yaml'
 require 'redcloth'
 
-basedir = File.expand_path(File.dirname(__FILE__))
+BASE_DIR = File.expand_path(File.dirname(__FILE__)) unless defined? BASE_DIR
 
-# Init for DataMapper
-DataMapper.setup(:default, "sqlite3:///#{basedir}/hamlog.db")
-#DataObjects::Sqlite3.logger = DataObjects::Logger.new(STDOUT, :debug)
 require 'models'
-DataMapper.auto_upgrade!
 
-set YAML.load(open("#{basedir}/config.yml"))
-set :public, "#{basedir}/public"
-
+set YAML.load(open("#{BASE_DIR}/config.yml"))
+set :public, "#{BASE_DIR}/public"
 enable :sessions
 
 before do
