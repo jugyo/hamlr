@@ -177,9 +177,8 @@ get '/css' do
 end
 
 helpers do
-  def h(str)
-    # TODO
-    str
+  def h(text)
+    Rack::Utils.escape_html(text)
   end
 
   def tx(str)
