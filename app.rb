@@ -9,6 +9,8 @@ require 'dm-core'
 
 SETTING = YAML.load(open("#{File.dirname(__FILE__)}/setting.yml"))
 set SETTING
+set :views, "themes/#{SETTING['theme']}"
+
 enable :sessions
 
 configure :test do

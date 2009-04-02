@@ -1,3 +1,3 @@
 get '/sample' do
-  "Hello Haml"
+  {:theme => options.theme, :plugins => options.plugins}.inspect
 end
