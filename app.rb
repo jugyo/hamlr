@@ -7,8 +7,8 @@ require 'yaml'
 require 'redcloth'
 require 'dm-core'
 
-set YAML.load(open("#{File.dirname(__FILE__)}/setting.yml"))
-
+SETTING = YAML.load(open("#{File.dirname(__FILE__)}/setting.yml"))
+set SETTING
 enable :sessions
 
 configure :test do
@@ -28,6 +28,16 @@ end
 configure do
   require 'models'
   DataMapper.auto_upgrade!
+end
+
+SETTING['plugins'].each do |plugin|
+  begin
+    load "plugins/#{plugin}.rb"
+    puts 'Load plugin => ' + plugin
+  rescue Exception => e
+    puts "Error: #{e}"
+    puts e.backtrace.join("\n")
+  end
 end
 
 before do

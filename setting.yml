@@ -1,5 +1,8 @@
-environment: production
+environment: development
 user_id: test
 password: test
 blog_title: blog title
+views: themes/default
 par_page: 10
+plugins:
+  - sample
