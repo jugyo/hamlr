@@ -97,30 +97,40 @@ get '/search' do
 end
 
 get '/entry/edit/:id' do
-  @entry = Entry.get(params[:id])
-  haml "= partial :haml, 'entry/form', :locals => {:action => '/entry/update/#{params[:id]}', :button_label => 'save'}"
+  if @logged_in
+    @entry = Entry.get(params[:id])
+    haml "= partial :haml, 'entry/form', :locals => {:action => '/entry/update/#{params[:id]}', :button_label => 'save'}"
+  end
 end
 
 post '/entry/update/:id' do
-  @entry = Entry.get(params[:id])
-  @entry.update_attributes(:title=>params[:title], :body=>params[:body])
-  redirect "/entry/#{@entry.id}"
+  if @logged_in
+    @entry = Entry.get(params[:id])
+    @entry.update_attributes(:title=>params[:title], :body=>params[:body])
+    redirect "/entry/#{@entry.id}"
+  end
 end
 
 post '/entry/delete/:id' do
-  @entry = Entry.get(params[:id])
-  @entry.destroy
-  redirect "/"
+  if @logged_in
+    @entry = Entry.get(params[:id])
+    @entry.destroy
+    redirect "/"
+  end
 end
 
 get '/entry/new' do
-  @entry = Entry.new
-  haml "= partial :haml, 'entry/form', :locals => {:action=>'/entry/create', :button_label=>'post'}"
+  if @logged_in
+    @entry = Entry.new
+    haml "= partial :haml, 'entry/form', :locals => {:action=>'/entry/create', :button_label=>'post'}"
+  end
 end
 
 post '/entry/create' do
-  e = Entry.create(params)
-  redirect "/entry/#{e.id}"
+  if @logged_in
+    e = Entry.create(params)
+    redirect "/entry/#{e.id}"
+  end
 end
 
 get '/entry/:id' do
