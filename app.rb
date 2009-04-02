@@ -59,7 +59,7 @@ get '/' do
   @entries = Entry.all(:order => [:id.desc], :limit=>options.par_page)
   count = repository(:default).adapter.query('SELECT count(*) FROM entries')[0]
   @page_count = (count / options.par_page.to_f).ceil
-  haml "= partial :haml, 'entries', :locals => {:entries => @entries}"
+  haml "= partial 'entries', :locals => {:entries => @entries}"
 end
 
 get '/page/:page' do
@@ -68,7 +68,7 @@ get '/page/:page' do
     @entries = Entry.all(:order => [:id.desc], :limit => options.par_page, :offset => (@page - 1) * options.par_page)
     count = repository(:default).adapter.query('SELECT count(*) FROM entries')[0]
     @page_count = (count / options.par_page.to_f).ceil
-    haml "=partial :haml, 'entries', :locals => {:entries => @entries}"
+    haml "=partial 'entries', :locals => {:entries => @entries}"
   else
     redirect '/'
   end
@@ -90,7 +90,7 @@ get '/search' do
       'SELECT count(*) FROM entries WHERE title like ? or body like ?',
       "%#{@q}%", "%#{@q}%")[0]
     @page_count = (count / options.par_page.to_f).ceil
-    haml "= partial :haml, 'search', :locals => {:entries => @entries}"
+    haml "= partial 'search', :locals => {:entries => @entries}"
   else
     redirect '/'
   end
@@ -99,7 +99,7 @@ end
 get '/entry/edit/:id' do
   if @logged_in
     @entry = Entry.get(params[:id])
-    haml "= partial :haml, 'entry/form', :locals => {:action => '/entry/update/#{params[:id]}', :button_label => 'save'}"
+    haml "= partial 'entry/form', :locals => {:action => '/entry/update/#{params[:id]}', :button_label => 'save'}"
   end
 end
 
@@ -122,7 +122,7 @@ end
 get '/entry/new' do
   if @logged_in
     @entry = Entry.new
-    haml "= partial :haml, 'entry/form', :locals => {:action=>'/entry/create', :button_label=>'post'}"
+    haml "= partial 'entry/form', :locals => {:action=>'/entry/create', :button_label=>'post'}"
   end
 end
 
@@ -136,7 +136,7 @@ end
 get '/entry/:id' do
   @entry = Entry.get(params[:id])
   if @entry
-    haml "= partial :haml, 'entry/entry', :locals => {:entry => @entry}"
+    haml "= partial 'entry/entry', :locals => {:entry => @entry}"
   else
     redirect "/"
   end
@@ -189,19 +189,10 @@ helpers do
     end
   end
 
-  def partial(renderer, template, options = {})
+  def partial(template, options = {})
     options = options.merge({:layout => false})
     template = "#{template.to_s}".to_sym
-    m = method(renderer)
-    m.call(template, options)
-  end
-
-  def partial_haml(template, options = {})
-    partial(:haml, template, options = {})
-  end
-
-  def partial_erb(template, options)
-    partial(:erb, template, options)
+    haml(template, options)
   end
 end
 

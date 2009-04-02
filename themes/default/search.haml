@@ -5,7 +5,7 @@
     %a{:href=>"/search?q=#{@q}&page=#{@page + 1}"} Next&gt;
 
 -entries.each do |entry|
-  = partial :haml, 'entry/entry', :locals => {:entry => entry}
+  = partial 'entry/entry', :locals => {:entry => entry}
 
 .page_navi
   - if @page > 1
