@@ -11,12 +11,18 @@ set YAML.load(open("#{File.dirname(__FILE__)}/setting.yml"))
 
 enable :sessions
 
-configure :test, :development do
+configure :test do
   DataMapper.setup(:default, "sqlite3::memory:")
 end
 
+configure :development do
+  set :app_file, __FILE__
+  set :reload, true
+  DataMapper.setup(:default, "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/development.db")
+end
+
 configure :production do
-  DataMapper.setup(:default, "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/hamlr.db")
+  DataMapper.setup(:default, "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/production.db")
 end
 
 configure do
@@ -89,6 +95,12 @@ post '/entry/update/:id' do
   redirect "/entry/#{@entry.id}"
 end
 
+post '/entry/delete/:id' do
+  @entry = Entry.get(params[:id])
+  @entry.destroy
+  redirect "/"
+end
+
 get '/entry/new' do
   @entry = Entry.new
   haml "= partial :haml, 'entry/form', :locals => {:action=>'/entry/create', :button_label=>'post'}"
@@ -101,7 +113,11 @@ end
 
 get '/entry/:id' do
   @entry = Entry.get(params[:id])
-  haml :'entry/show'
+  if @entry
+    haml :'entry/show'
+  else
+    redirect "/"
+  end
 end
 
 get '/login' do
