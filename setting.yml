@@ -1,0 +1,5 @@
+environment: production
+user_id: test
+password: test
+blog_title: blog title
+par_page: 10

@@ -5,12 +5,24 @@ require 'rubygems'
 require 'sinatra'
 require 'yaml'
 require 'redcloth'
+require 'dm-core'
 
-require 'models'
-
-set YAML.load(open("#{File.dirname(__FILE__)}/config.yml"))
+set YAML.load(open("#{File.dirname(__FILE__)}/setting.yml"))
 
 enable :sessions
+
+configure :test, :development do
+  DataMapper.setup(:default, "sqlite3::memory:")
+end
+
+configure :production do
+  DataMapper.setup(:default, "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/hamlr.db")
+end
+
+configure do
+  require 'models'
+  DataMapper.auto_upgrade!
+end
 
 before do
   AuthToken.delete_old_tokens
