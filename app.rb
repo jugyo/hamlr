@@ -98,14 +98,14 @@ get '/search' do
 end
 
 get '/entry/edit/:id' do
-  if @logged_in
+  if auth?
     @entry = Entry.get(params[:id])
     haml "= partial 'entry/form', :locals => {:action => '/entry/update/#{params[:id]}', :button_label => 'save'}"
   end
 end
 
 post '/entry/update/:id' do
-  if @logged_in
+  if auth?
     @entry = Entry.get(params[:id])
     @entry.update_attributes(:title=>params[:title], :body=>params[:body])
     redirect "/entry/#{@entry.id}"
@@ -113,7 +113,7 @@ post '/entry/update/:id' do
 end
 
 post '/entry/delete/:id' do
-  if @logged_in
+  if auth?
     @entry = Entry.get(params[:id])
     @entry.destroy
     redirect "/"
@@ -121,14 +121,14 @@ post '/entry/delete/:id' do
 end
 
 get '/entry/new' do
-  if @logged_in
+  if auth?
     @entry = Entry.new
     haml "= partial 'entry/form', :locals => {:action=>'/entry/create', :button_label=>'post'}"
   end
 end
 
 post '/entry/create' do
-  if @logged_in
+  if auth?
     e = Entry.create(params)
     redirect "/entry/#{e.id}"
   end
@@ -144,7 +144,7 @@ get '/entry/:id' do
 end
 
 get '/login' do
-  if @logged_in
+  if auth?
     redirect '/'
   else
     haml :login
@@ -152,7 +152,7 @@ get '/login' do
 end
 
 post '/login' do
-  if @logged_in
+  if auth?
     redirect '/'
   elsif auth(params[:user_id], params[:password])
     auth_token = AuthToken.new(:token=>AuthToken.generate_token, :expired_at=>token_expired_time)
@@ -178,6 +178,10 @@ get '/css' do
 end
 
 helpers do
+  def auth?
+    @logged_in
+  end
+
   def h(text)
     Rack::Utils.escape_html(text)
   end
