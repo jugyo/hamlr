@@ -7,9 +7,10 @@ require 'yaml'
 require 'redcloth'
 require 'dm-core'
 
-SETTING = YAML.load(open("#{File.dirname(__FILE__)}/setting.yml"))
+BASE_DIR = File.expand_path(File.dirname(__FILE__))
+SETTING = YAML.load(open("#{BASE_DIR}/setting.yml"))
 set SETTING
-set :views, "themes/#{SETTING['theme']}"
+set :views, "#{BASE_DIR}/themes/#{SETTING['theme']}"
 
 enable :sessions
 
@@ -20,11 +21,11 @@ end
 configure :development do
   set :app_file, __FILE__
   set :reload, true
-  DataMapper.setup(:default, "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/development.db")
+  DataMapper.setup(:default, "sqlite3:///#{BASE_DIR}/development.db")
 end
 
 configure :production do
-  DataMapper.setup(:default, "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/production.db")
+  DataMapper.setup(:default, "sqlite3:///#{BASE_DIR}/production.db")
 end
 
 configure do
@@ -34,7 +35,7 @@ end
 
 SETTING['plugins'].each do |plugin|
   begin
-    load "plugins/#{plugin}.rb"
+    load "#{BASE_DIR}/plugins/#{plugin}.rb"
     puts 'Load plugin => ' + plugin
   rescue Exception => e
     puts "Error: #{e}"
