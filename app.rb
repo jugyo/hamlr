@@ -1,6 +1,10 @@
 #!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
 
+# TODO: tagging
+# TODO: comments
+# TODO: tests
+
 require 'rubygems'
 require 'sinatra'
 require 'yaml'
