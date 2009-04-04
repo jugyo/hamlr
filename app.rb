@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
 
-# TODO: Use auth?
-
 require 'rubygems'
 require 'sinatra'
 require 'yaml'
