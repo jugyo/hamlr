@@ -7,8 +7,8 @@ require 'yaml'
 require 'redcloth'
 require 'dm-core'
 
-BASE_DIR = File.expand_path(File.dirname(__FILE__))
-SETTING = YAML.load(open("#{BASE_DIR}/setting.yml"))
+BASE_DIR = File.expand_path(File.dirname(__FILE__)) unless defined? BASE_DIR
+SETTING = YAML.load(open("#{BASE_DIR}/setting.yml")) unless defined? SETTING
 set SETTING
 set :views, "#{BASE_DIR}/themes/#{SETTING['theme']}"
 
