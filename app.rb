@@ -19,8 +19,6 @@ configure :test do
 end
 
 configure :development do
-  set :app_file, __FILE__
-  set :reload, true
   DataMapper.setup(:default, "sqlite3:///#{BASE_DIR}/development.db")
 end
 
