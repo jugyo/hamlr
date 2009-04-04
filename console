@@ -1,0 +1,10 @@
+#!/bin/sh
+
+env=development
+if [ $# -eq 1 ]; then
+  env=$1
+fi
+export RACK_ENV=$env
+echo "RACK_ENV => $RACK_ENV"
+irb -r app.rb
+
