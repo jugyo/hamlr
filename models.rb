@@ -5,6 +5,37 @@ class Entry
   property :body,       Text
   property :created_at, DateTime
   property :updated_at, DateTime
+
+  has n, :comments
+  has n, :taggings
+  has n, :tags, :through => :taggings
+end
+
+class Comment
+  include DataMapper::Resource
+  property :id,         Serial
+  property :name,       String
+  property :email,      String
+  property :url,        String
+  property :body,       Text
+
+  belongs_to :entry
+end
+
+class Tag
+  include DataMapper::Resource
+  property :id,         Serial
+  property :name,       String
+
+  has n, :taggings
+  has n, :entries, :through => :taggings
+end
+
+class Tagging
+  include DataMapper::Resource
+ 
+  belongs_to :tag
+  belongs_to :entry
 end
 
 class AuthToken
