@@ -1,6 +1,6 @@
 .comments
   %h2 Comments
-  - comments.each do |comment|
+  - entry.comments.each do |comment|
     .comment
       .status
         - if comment.url && !comment.url.empty?
@@ -8,4 +8,32 @@
         - else
           = comment.name
       = comment.body
+
+  #comment_form
+    %form{:action=>"/entry/#{entry.id}/comment", :method=>'post'}
+      %table
+        %tr
+          %th
+            name:
+          %td
+            %input{:type=>'text', :name=>'name', :size=>40}
+        %tr
+          %th
+            email:
+          %td
+            %input{:type=>'text', :name=>'email', :size=>40}
+        %tr
+          %th
+            url:
+          %td
+            %input{:type=>'text', :name=>'url', :size=>40}
+        %tr
+          %th
+            comment:
+          %td
+            %textarea{:name=>'body', :rows=>10, :cols=>100}
+        %tr
+          %th
+          %td
+            %input{:type=>'submit', :value=>'post'}
 

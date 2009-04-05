@@ -145,6 +145,18 @@ get '/entry/:id' do
   end
 end
 
+post '/entry/:id/comment' do
+  @entry = Entry.get(params[:id])
+  @entry.comments.build(
+    :name => params[:name],
+    :email => params[:email],
+    :url => params[:url],
+    :body => params[:body]
+  )
+  @entry.save
+  redirect "/entry/#{params[:id]}"
+end
+
 get '/login' do
   if @logged_in
     redirect '/'
