@@ -1,0 +1,11 @@
+.comments
+  %h2 Comments
+  - comments.each do |comment|
+    .comment
+      .status
+        - if comment.url && !comment.url.empty?
+          %a{:href=>comment.url}= comment.name
+        - else
+          = comment.name
+      = comment.body
+
