@@ -139,7 +139,7 @@ end
 get '/entry/:id' do
   @entry = Entry.get(params[:id])
   if @entry
-    haml "= partial 'entry/entry', :locals => {:entry => @entry}"
+    haml :"entry/show"
   else
     redirect "/"
   end
