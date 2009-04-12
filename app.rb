@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # TODO: tagging
-# TODO: comments
+# TODO: comments => apply textile
 # TODO: tests
 
 require 'rubygems'
