@@ -1,13 +1,14 @@
 .comments
   %h2#comments Comments
   - entry.comments.each do |comment|
-    .comment
+    %div{:class=>'comment', :id=>"comment_#{comment.id}"}
       .status
         - if comment.url && !comment.url.empty?
           %a{:href=>comment.url}&= comment.name
         - else
           &= comment.name
-      = h(comment.body).gsub("\n", "<br />\n")
+      .comment_body
+        = h(comment.body).gsub("\n", "<br />\n")
 
   #comment_form
     %form{:action=>"/entry/#{entry.id}/comment", :method=>'post'}
