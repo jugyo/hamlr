@@ -2,8 +2,12 @@
   %h2.entry_title
     %a{:href=>"/entry/#{entry.id}"}&= entry.title
     %span{:style=>'font-size: 0.7em; color: silver;'}="##{entry.id}"
-  .entry_body= Haml::Engine.new(entry.body).render
   - if @logged_in
     .entry_menu
       %a{:href=>"/entry/edit/#{entry.id}"} edit
       %a{:href=>"javascript:void(0)", :onclick=>"if (confirm('Are you shure?')) { jQuery.post('/entry/delete/#{entry.id}', null, function(){location.reload()}) }"} delete
+
+  .entry_body= Haml::Engine.new(entry.body).render
+
+  .entry_footer
+    %a{:href=>"/entry/#{entry.id}#comments"}= "comments (#{entry.comments.count})"
