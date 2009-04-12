@@ -11,4 +11,4 @@
   .entry_body= Haml::Engine.new(entry.body).render
 
   .entry_footer
-    %a{:href=>"/entry/#{entry.id}#comments"}= "comments (#{entry.comments.count})"
+    %a{:href=>"/entry/#{entry.id}#comments"}= "comments (#{entry.comments.size})"
