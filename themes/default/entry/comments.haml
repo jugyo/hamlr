@@ -9,6 +9,9 @@
           &= comment.name
       .comment_body
         = h(comment.body).gsub("\n", "<br />\n")
+      .comment_footer
+        - if @logged_in
+          %a{:href=>"javascript:void(0)", :onclick=>"if (confirm('Are you shure?')) { jQuery.post('/comment/delete/#{comment.id}', null, function(){location.reload()}) }"} delete
 
   #comment_form
     %form{:action=>"/comment", :method=>'post'}

@@ -117,7 +117,7 @@ post '/entry/delete/:id' do
   if @logged_in
     @entry = Entry.get(params[:id])
     @entry.destroy
-    redirect "/"
+    ''
   end
 end
 
@@ -154,6 +154,14 @@ post '/comment' do
   )
   @entry.save
   redirect "/entry/#{params[:entry_id]}"
+end
+
+post '/comment/delete/:id' do
+  if @logged_in
+    @comment = Comment.get(params[:id])
+    @comment.destroy
+    ''
+  end
 end
 
 get '/login' do
