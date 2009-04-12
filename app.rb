@@ -144,8 +144,8 @@ get '/entry/:id' do
   end
 end
 
-post '/entry/:id/comment' do
-  @entry = Entry.get(params[:id])
+post '/comment' do
+  @entry = Entry.get(params[:entry_id])
   @entry.comments.build(
     :name => params[:name],
     :email => params[:email],
@@ -153,7 +153,7 @@ post '/entry/:id/comment' do
     :body => params[:body]
   )
   @entry.save
-  redirect "/entry/#{params[:id]}"
+  redirect "/entry/#{params[:entry_id]}"
 end
 
 get '/login' do

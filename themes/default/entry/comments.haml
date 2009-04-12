@@ -11,7 +11,8 @@
         = h(comment.body).gsub("\n", "<br />\n")
 
   #comment_form
-    %form{:action=>"/entry/#{entry.id}/comment", :method=>'post'}
+    %form{:action=>"/comment", :method=>'post'}
+      %input{:type=>'hidden', :name=>'entry_id', :value=>entry.id}
       %table
         %tr
           %th
