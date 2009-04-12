@@ -6,4 +6,4 @@
   - if @logged_in
     .entry_menu
       %a{:href=>"/entry/edit/#{entry.id}"} edit
-      %a{:href=>"javascript:void(0)", :onclick=>"jQuery.post('/entry/delete/#{entry.id}', null, function(){location.reload()})"} delete
+      %a{:href=>"javascript:void(0)", :onclick=>"if (confirm('Are you shure?')) { jQuery.post('/entry/delete/#{entry.id}', null, function(){location.reload()}) }"} delete
