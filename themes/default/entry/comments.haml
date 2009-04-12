@@ -7,7 +7,7 @@
           %a{:href=>comment.url}&= comment.name
         - else
           &= comment.name
-      =tx(h(comment.body))
+      = h(comment.body).gsub("\n", "<br />\n")
 
   #comment_form
     %form{:action=>"/entry/#{entry.id}/comment", :method=>'post'}

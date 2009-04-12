@@ -1,8 +1,8 @@
 .entry
   %h2.entry_title
-    %a{:href=>"/entry/#{entry.id}"}=h entry.title
+    %a{:href=>"/entry/#{entry.id}"}&= entry.title
     %span{:style=>'font-size: 0.7em; color: silver;'}="##{entry.id}"
-  .entry_body=tx entry.body
+  .entry_body= Haml::Engine.new(entry.body).render
   - if @logged_in
     .entry_menu
       %a{:href=>"/entry/edit/#{entry.id}"} edit

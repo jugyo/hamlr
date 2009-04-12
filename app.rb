@@ -199,14 +199,6 @@ helpers do
     Rack::Utils.escape_html(text)
   end
 
-  def tx(str)
-    if str
-      RedCloth.new(str).to_html
-    else
-      ''
-    end
-  end
-
   def partial(template, options = {})
     options = options.merge({:layout => false})
     template = "#{template.to_s}".to_sym
