@@ -4,9 +4,9 @@
     .comment
       .status
         - if comment.url && !comment.url.empty?
-          %a{:href=>comment.url}=h comment.name
+          %a{:href=>comment.url}&= comment.name
         - else
-          =h comment.name
+          &= comment.name
       =tx(h(comment.body))
 
   #comment_form
